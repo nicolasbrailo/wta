@@ -18,7 +18,7 @@ a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
-dl, dt, dd, ol, ul, li,
+dl, dt, dd,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
@@ -227,4 +227,15 @@ a:focus {
 
 .slide q strong {
     white-space: nowrap;
+}
+
+.bottom-message {
+  border: 1px solid grey;
+  margin-bottom: 10px;
+  bottom: 10px;
+  right: 10px;
+}
+
+.bottom-message p {
+  font: 40px;
 }
