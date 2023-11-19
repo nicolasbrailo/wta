@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=1024" />
     <title>WTA: A collection of cool audio demos</title>
+    <!-- From https://upload.wikimedia.org/wikipedia/commons/4/47/Sound-icon.svg -->
     <link rel="shortcut icon" href="favicon.png" />
 
     <link href="common.css" rel="stylesheet" />
@@ -51,7 +52,7 @@ Demos:
         <li><b>NO HEADPHONES!</b> Some audio demos may be painfuly uncomfortable with headphones</li>
         <li>Careful with the volume: some audio demos may be annoying if the volume is too loud</li>
         <li>Mic access: demos here will process your mic, but all processing is done locally (<a href="https://github.com/nicolasbrailo/wta">Check the source!</a>)</li>
-        <li></li>
+        <li>Move through the demos swiping left and right, or with the left/right arrows</li>
       </ul>
       <div class="bottom-message">
         <p><a href="https://nicolasbrailo.github.io/wta/">This demo should be available @ https://nicolasbrailo.github.io/wta/</a></p>
@@ -74,6 +75,14 @@ Demos:
           <input type="range" id="shifting_peaks_slider" min="0", max="100" value="1" style="width: 90%"/>
           <label id="shifting_peaks_slider_f_lbl" for="shifting_peaks_slider" style="display: inline-block; width: 65%">F:</label><br/>
           <div id="shifting_peaks_graph_container"></div>
+        </p>
+    </div>
+
+
+    <div class="step slide" id="fft_3d">
+        <h1>Your voice has a shape!</h1>
+        <p>
+          <canvas id="fft_3d_canvas" style="display: block; width: 90%; height: 90%; border: 1px solid grey;" content="width=device-width,initial-scale=1.0"></canvas>
         </p>
     </div>
 
