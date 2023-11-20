@@ -4,6 +4,7 @@ import {VHSEffect} from './vhs.js';
 import {Underwater} from './underwater.js';
 import {demo_shifting_peaks} from './demo_shifting_peaks.js';
 import {demo_waveforms} from './waveforms.js';
+import {specPlot} from './specPlot.js';
 import AudioMotionAnalyzer from 'https://cdn.skypack.dev/audiomotion-analyzer?min';
 
 export async function is_this_on(ctx) {
@@ -21,101 +22,12 @@ export async function shifting_peaks(ctx) {
 
 export async function fft_3d(ctx) {
   let mic = ctx.createMediaStreamSource(await getUserMic());
-  const analyser = ctx.createAnalyser();
-  analyser.smoothingTimeConstant = 0;
-  analyser.fftSize = 2048;
-  mic.connect(analyser);
 
-  // Display constants
-  const W = Math.round($("#fft_3d_canvas").width());
-  const H = Math.round($("#fft_3d_canvas").height());
-  // Size for each timeslice in the plot (which also determines the speed
-  // with which the plot moves)
-  const TIMESLICE_W = 8;
-
-  const tempCanvas = document.createElement('canvas');
-  const displayCanvas = $("#fft_3d_canvas")[0];
-  const displayCtx = displayCanvas.getContext('2d');
-  const renderCtx = tempCanvas.getContext('2d');
-
-  // Render helpers
-  renderCtx.drawLine = (x1, y1, x2, y2, col=null) => {
-    if (col !== null) {
-      renderCtx.strokeStyle = col;
-    }
-    renderCtx.moveTo(x1, y1);
-    renderCtx.lineTo(x2, y2);
-  };
-
-  const getColorForEnergy = (m) => {
-    // Colors from view-source:https://academo.org/demos/spectrum-analyzer/demo.js
-    if (m < 5) { return 'rgb(0,0,0)'; }
-    if (m < 25) { return 'rgb(75, 0, 159)'; }
-    if (m < 50) { return 'rgb(104,0,251)'; }
-    if (m < 75) { return 'rgb(131,0,255)'; }
-    if (m < 100) { return 'rgb(155,18,157)'; }
-    if (m < 125) { return 'rgb(175, 37, 0)'; }
-    if (m < 150) { return 'rgb(191, 59, 0)'; }
-    if (m < 175) { return 'rgb(206, 88, 0)'; }
-    if (m < 200) { return 'rgb(223, 132, 0)'; }
-    if (m < 225) { return 'rgb(240, 188, 0)'; }
-    return 'rgb(255, 252, 0)';
-  };
-
-  // Ensure everything has the same size
-  displayCanvas.height = H;
-  displayCanvas.width = W;
-  tempCanvas.height = H;
-  tempCanvas.width = W;
-
-  // Draw fixed parts of canvas
-  displayCtx.beginPath();
-  displayCtx.strokeStyle = 'red';
-  displayCtx.lineWidth = 2;
-  displayCtx.moveTo(20, 20);
-  displayCtx.lineTo(20, H-20);
-  displayCtx.moveTo(20, H-20);
-  displayCtx.lineTo(W-20, H-20);
-  displayCtx.stroke();
-
-  let animation = null;
-  const renderNextFrame = () => {
-    // Copy current frame, shifted by one timeslice
-    renderCtx.clearRect(0, 0, W, H);
-    renderCtx.drawImage(displayCanvas, 0, 0, W, H, -TIMESLICE_W, 0, W, H);
-
-    // fft
-    const bins = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(bins);
-
-    const binRenderStartY = (bin) => {
-      const binW = 48000 / 2 / analyser.frequencyBinCount;
-      const mel = (f) => { return 2595 * Math.log10(1 + (f / 700)); };
-      const h01 = mel(binW * bin) / mel(binW * analyser.frequencyBinCount);
-      return H*(1-h01) - 410;
-    }
-
-    // Plot this timeslice
-    const fHeight = Math.floor((H - 20) / bins.length);
-    const tPos = W - 20;
-    renderCtx.beginPath();
-    for (let i=0; i < bins.length; ++i) {
-      renderCtx.fillStyle = getColorForEnergy(bins[i]);
-      renderCtx.fillRect(tPos-TIMESLICE_W, binRenderStartY(i), TIMESLICE_W, binRenderStartY(i+1));
-    }
-    renderCtx.stroke();
-
-    // Copy to display
-    displayCtx.drawImage(tempCanvas, 25, 25, W, H, 25, 25, W, H);
-
-    // Register callback for next frame
-    animation = requestAnimationFrame(renderNextFrame);
-  };
-
-  renderNextFrame();
+  const plot = specPlot(ctx, 'fft_3d_canvas', {fftSize: 2048, timeSliceWidthPx: 5});
+  plot.connectInput(mic);
 
   return () => {
-    cancelAnimationFrame(animation);
+    plot.stop();
     mic.disconnect();
     mic = null;
   };
@@ -382,5 +294,10 @@ export async function echo_echo_echo_echo(ctx) {
   return () => {
     mic.disconnect();
     mic = null;
+  };
+}
+
+export async function wola(ctx) {
+  return () => {
   };
 }
