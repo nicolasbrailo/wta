@@ -5,7 +5,8 @@ import {Underwater} from './underwater.js';
 import {demo_shifting_peaks} from './demo_shifting_peaks.js';
 import {demo_waveforms} from './waveforms.js';
 import {specPlot} from './specPlot.js';
-import AudioMotionAnalyzer from 'https://cdn.skypack.dev/audiomotion-analyzer?min';
+// TODO
+// import AudioMotionAnalyzer from 'https://cdn.skypack.dev/audiomotion-analyzer?min';
 
 export async function is_this_on(ctx) {
   let mic = ctx.createMediaStreamSource(await getUserMic());
@@ -297,7 +298,41 @@ export async function echo_echo_echo_echo(ctx) {
   };
 }
 
-export async function wola(ctx) {
+export async function experiment(ctx) {
+  const osc = ctx.createOscillator();
+  osc.frequency.setValueAtTime(400, 0, 0);
+
+  const oscGain = ctx.createGain();
+  oscGain.gain.setValueAtTime(0.1, 0);
+
+  const bus = ctx.createGain();
+  bus.gain.setValueAtTime(1, 0);
+
+  let mic = ctx.createMediaStreamSource(await getUserMic());
+  const testSrc = ctx.createMediaElementSource(document.getElementById('experiment_voice'));
+
+  const exp = new AudioWorkletNode(ctx, 'experiment');
+  exp.parameters.get('resampleFactor').setValueAtTime(1.8, 0);
+
+  exp.port.onmessage = console.log;
+  const statsIntervalId = setInterval(() => {
+    exp.port.postMessage('stats');
+  }, 1000);
+
+  osc.connect(oscGain);
+  //oscGain.connect(bus);
+  mic.connect(bus);
+  testSrc.connect(bus);
+  bus.connect(exp);
+  exp.connect(ctx.destination);
+
+  osc.start();
+
   return () => {
+    clearInterval(statsIntervalId);
+    mic.disconnect();
+    testSrc.disconnect();
+    exp.disconnect();
+    mic = null;
   };
 }

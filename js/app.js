@@ -8,6 +8,8 @@ async function initDemos(currentSlide) {
   await audioContext.audioWorklet.addModule('js/framedropper.js');
   await audioContext.audioWorklet.addModule('js/pinknoise.js');
   await audioContext.audioWorklet.addModule('js/bitwidth.js');
+  await audioContext.audioWorklet.addModule('js/experiment.js');
+  //await audioContext.audioWorklet.addModule('js/experiment2.js');
 
   // Demo hooks to impress.js
   let cleanup = null;
@@ -53,16 +55,16 @@ window.addEventListener('load', async () => {
     console.info("DEV MODE ENABLED, AUTO CAPTURE MIC");
     getUserMic().then(_ => {
       initDemos(currentSlide);
-      $('#demos_disabled_msg').toggle();
+      document.getElementById('demos_disabled_msg').style.visibility = 'hidden';
     });
   }
 
-  $('#demos_enable')[0].addEventListener("click", () => {
+  document.getElementById('demos_enable').addEventListener("click", () => {
     initDemos(currentSlide);
-    $('#demos_disabled_msg').toggle();
+    document.getElementById('demos_disabled_msg').style.visibility = 'hidden';
   });
 
-  $('#demos_keep_disabled')[0].addEventListener("click", () => {
-    $('#demos_disabled_msg').toggle();
+  document.getElementById('demos_keep_disabled').addEventListener("click", () => {
+    document.getElementById('demos_disabled_msg').style.visibility = 'hidden';
   });
 });

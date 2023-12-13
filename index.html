@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=1024" />
     <title>WTA: A collection of cool audio demos</title>
+
     <!-- From https://upload.wikimedia.org/wikipedia/commons/4/47/Sound-icon.svg -->
     <link rel="shortcut icon" href="favicon.png" />
 
@@ -23,15 +24,6 @@
   <button id="demos_keep_disabled">Keep demos disabled (no audio access)</button>
 </div>
 
-
-<!--
-Demos:
-- Self recording RAW, then add AGC, then add NS
-- Self-echo: ask user to read text with self echo present
-- Frame loss example
-- Frame loss with PLC?
-- Frame loss with different PLCs? (silent, tone, ML?)
--->
 
 <div id="impress"
     data-transition-duration="0"
@@ -176,9 +168,20 @@ Demos:
     </div>
 
 
-    <!--div class="step slide" id="wola" data-x="0" data-y="0">
-        <h1>WOLA</h1>
-    </div-->
+    <!--
+    <div class="step slide" id="experiment" data-x="0" data-y="0">
+      <h1>experiment</h1>
+      <div>
+        <p>Voice sample</p>
+        <audio controls loop
+               style="width: 40%; height: 80px"
+               id="experiment_voice"
+               src="media_small/voice.mp3"
+               crossorigin="anonymous"
+               type="audio/mpeg"></audio>
+      </div>
+    </div>
+    -->
 
 <!--
     <div class="step slide" id="hearing_colors" data-rel-y="3840">
@@ -234,11 +237,11 @@ Demos:
 
 </div>
 
-<script
+<!--script
   src="https://code.jquery.com/jquery-3.6.2.min.js"
   integrity="sha384-hG927x624PENgmWpFXvtXur3MEE0/cNnW0uTi+AcHTSFncBqimnzYyBzy8aFDA1s"
   crossorigin="anonymous">
-</script>
+</script-->
 
 <script src="impress.min.js"></script>
 <script type="module" src="js/app.js"></script>
