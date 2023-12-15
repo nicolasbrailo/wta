@@ -1,4 +1,4 @@
-import {fromDb} from './audioHelpers.js';
+import {fromDb} from '/js/audioHelpers.js';
 
 export class VHSEffect {
   constructor(ctx) {

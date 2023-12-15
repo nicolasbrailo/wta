@@ -1,7 +1,6 @@
 import {exp01ToF, fromDb, getUserMic, linToDb, visSpect01ToWavelength, visSpect01ToRGB } from './audioHelpers.js';
 
-// TODO
-// import AudioMotionAnalyzer from 'https://cdn.skypack.dev/audiomotion-analyzer?min';
+import AudioMotionAnalyzer from './3p/audiomotion-analyzer.js'
 
 export async function demo_shifting_peaks(ctx) {
   // Create an osc to be rendered

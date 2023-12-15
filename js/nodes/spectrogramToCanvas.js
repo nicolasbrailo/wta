@@ -1,11 +1,25 @@
-export function specPlot(ctx, renderCanvasId, cfg) {
+/**
+ * Creates a spectrogram analyzer and render object. Will render to a specified
+ * canvas element.
+ *
+ *   ctx: audio context
+ *   renderCanvasId: id of the element to render results
+ *   cfg:
+ *      fftSize: 2048,        // Bins
+ *      timeSliceWidthPx: 5   // How fast the plot moves to the left
+ *
+ *  Returns an object: call connectInput(stream) to connect an audio stream,
+ *  and stop() to stop render and clean up (can't be restarted)
+ */
+export function createSpectrogramRenderer(ctx, renderCanvasId, cfg) {
   const analyser = ctx.createAnalyser();
   analyser.smoothingTimeConstant = 0;
   analyser.fftSize = cfg.fftSize || 2048;
 
   // Display constants
-  const W = Math.round($(`#${renderCanvasId}`).width());
-  const H = Math.round($(`#${renderCanvasId}`).height());
+  const displayCanvas = document.getElementById(renderCanvasId);
+  const W = Math.round(window.getComputedStyle(displayCanvas)?.width?.slice(0, -2) || document.body.scrollWidth);
+  const H = Math.round(window.getComputedStyle(displayCanvas)?.height?.slice(0, -2) || document.body.scrollHeight);
 
   // Size for each timeslice in the plot (which also determines the speed
   // with which the plot moves)
@@ -17,7 +31,6 @@ export function specPlot(ctx, renderCanvasId, cfg) {
   const PLOT_PADDING = 5;
 
   const tempCanvas = document.createElement('canvas');
-  const displayCanvas = $(`#${renderCanvasId}`)[0];
   const displayCtx = displayCanvas.getContext('2d');
   const renderCtx = tempCanvas.getContext('2d');
 

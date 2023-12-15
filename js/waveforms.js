@@ -1,6 +1,6 @@
 import {exp01ToF, fromDb, getUserMic, linToDb, visSpect01ToWavelength, visSpect01ToRGB } from './audioHelpers.js';
 
-// import AudioMotionAnalyzer from 'https://cdn.skypack.dev/audiomotion-analyzer?min';
+import AudioMotionAnalyzer from './3p/audiomotion-analyzer.js'
 
 export async function demo_waveforms(ctx) {
   const osc = ctx.createOscillator();

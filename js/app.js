@@ -5,11 +5,11 @@ async function initDemos(currentSlide) {
   window.audioContext = new (window.AudioContext || webkitAudioContext)();
 
   // Load extra modules
-  await audioContext.audioWorklet.addModule('js/framedropper.js');
-  await audioContext.audioWorklet.addModule('js/pinknoise.js');
-  await audioContext.audioWorklet.addModule('js/bitwidth.js');
-  await audioContext.audioWorklet.addModule('js/experiment.js');
-  //await audioContext.audioWorklet.addModule('js/experiment2.js');
+  await audioContext.audioWorklet.addModule('js/worklet_nodes/framedropper.js');
+  await audioContext.audioWorklet.addModule('js/worklet_nodes/pinknoise.js');
+  await audioContext.audioWorklet.addModule('js/worklet_nodes/bitwidth.js');
+  await audioContext.audioWorklet.addModule('js/worklet_nodes/experiment.js');
+  //await audioContext.audioWorklet.addModule('js/worklet_nodes/experiment2.js');
 
   // Demo hooks to impress.js
   let cleanup = null;

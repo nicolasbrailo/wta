@@ -1,12 +1,13 @@
 import {exp01ToF, fromDb, linToDb, getUserMic, UserMicRecorder, visSpect01ToRGB, webAudioFrameRMS } from './audioHelpers.js';
-import {PSTNizer} from './pstnizer.js';
-import {VHSEffect} from './vhs.js';
-import {Underwater} from './underwater.js';
 import {demo_shifting_peaks} from './demo_shifting_peaks.js';
 import {demo_waveforms} from './waveforms.js';
-import {specPlot} from './specPlot.js';
-// TODO
-// import AudioMotionAnalyzer from 'https://cdn.skypack.dev/audiomotion-analyzer?min';
+
+import {VHSEffect} from './nodes/vhs.js';
+import {PSTNizer} from './nodes/pstnizer.js';
+import {Underwater} from './nodes/underwater.js';
+import {createSpectrogramRenderer} from './nodes/spectrogramToCanvas.js';
+
+import AudioMotionAnalyzer from './3p/audiomotion-analyzer.js'
 
 export async function is_this_on(ctx) {
   let mic = ctx.createMediaStreamSource(await getUserMic());
@@ -24,7 +25,7 @@ export async function shifting_peaks(ctx) {
 export async function fft_3d(ctx) {
   let mic = ctx.createMediaStreamSource(await getUserMic());
 
-  const plot = specPlot(ctx, 'fft_3d_canvas', {fftSize: 2048, timeSliceWidthPx: 5});
+  const plot = createSpectrogramRenderer(ctx, 'fft_3d_canvas', {fftSize: 2048, timeSliceWidthPx: 5});
   plot.connectInput(mic);
 
   return () => {
